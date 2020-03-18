@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     printf("m = %d\n", m);
 
     // Calculate limit
-    int limit = (int) pow(2, n) - 1;
+    int limit = ( 1 << n ) - 1;
     
     // Read remaining lines of input file (v1, v2, v3, ...)
     while(fgets(buff, 10, fp) != NULL) {
@@ -33,8 +33,7 @@ int main(int argc, char *argv[]) {
         int page = virtualAddress >> n;
 
         // Calculate offset using bit-wise operation (m % 2^n)
-        int offset = m & limit;
-
+        int offset = virtualAddress & limit;
         // Print virtual address, page number, and offset
         printf("virtual address %d is in page number %d and offset %d\n", virtualAddress, page, offset);
     }
