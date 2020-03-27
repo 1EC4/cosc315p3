@@ -41,5 +41,7 @@ int main(int argc, char *argv[]) {
     // Close input file
     fclose(fp);
 
+    //while(1);
+
     return EXIT_SUCCESS; 
 }

@@ -1,6 +1,7 @@
 /* create a file to act as a disk and format the file system residing on the disk */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -12,7 +13,8 @@ int main(int argc, char *argv[]) {
 
   if (argc == 1 ) {
     fprintf(stderr, "usage: %s <diskFileName>\n", argv[0]);
-    exit(0);
+    //exit(0);
+    argv[1] = "disk0";
   }
 
   printf("Creating  a 128KB  file in %s\n",argv[1]);
@@ -41,5 +43,6 @@ int main(int argc, char *argv[]) {
   }
 
   close(fd);
+
   exit(1);
 }
