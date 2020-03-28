@@ -1,10 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include <sys/stat.h>
+#include <string.h>
 #include <fcntl.h>
 
 #define filepath "lab3_part2_input.txt"
 #define disk_name "disk0"
+#define int32size sizeof(__int32_t)
+#define charsize sizeof(char)
+
+// Structure for inodes
+struct inode {
+    char name[9]; // 8 bytes + 1 null terminator byte
+    __int32_t size;
+    __int32_t blockPointers[8];
+    __int32_t used;
+};
+
+// Structure for blocks.
+// Structure is used to improve readibility.
+struct block {
+    char data[1024];
+};
 
 // Declare helper functions
 int myFileSystem(char* diskName);
@@ -14,8 +33,19 @@ int list_files(void);
 int read_file(char name[8], int blockNum, char buf[1024]);
 int write_file(char name[8], int blockNum, char buf[1024]);
 
+// Super Block Information
+char fBlock[128]; // Free Block List
+struct inode inodes[16]; // List of inodes
+// Remaining 127 blocks
+struct block blocks[127];
+
 // Main function
 int main(int argc, char *argv[]) {
+    
+    myFileSystem(disk_name); // Load filesystem
+
+    return EXIT_SUCCESS;
+
     // Open input file
     FILE *fp;
     fp = fopen(filepath, "r");
@@ -65,8 +95,6 @@ int main(int argc, char *argv[]) {
     // Close input file
     fclose(fp);
 
-    myFileSystem(disk_name);
-
     return EXIT_SUCCESS;
 }
 
@@ -74,22 +102,67 @@ int main(int argc, char *argv[]) {
 // Open the file with name diskName
 int myFileSystem(char* diskName) {
 
-    // Read the first 1KB and parse it to structs/objecs representing the super block.
-    // An easy way to work with the 1KB memory chunk is to move a pointer to a position where a struct/object begins.
-    // You can use the sizeof operator to help cleanly determine the position.
-    // Next, cast the pointer to a pointer of the struct/object type.
-    // Be sure to close the file in a destructor or otherwise before the process exits.
+    // Reference integer for disk file
+    int disk;
+    // Buffer array for reading from disk file
+    char buffer[1024];
 
-    // fd = open(diskName, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-    // printf("%d",fp);
-    // char *buffer = (char *)calloc(1024, sizeof(char));
-    // fscanf(fp, "%s", buffer);
+    // Open disk file
+    disk = open(diskName, O_RDONLY);
+    if (disk == -1){ // Runs if there is an error when opening the disk file
+        printf("Could not open %s.\n", diskName);
+        return EXIT_FAILURE;
+    }
 
-    // for (int i = 0; i < 1024; i++) {
-    //     printf("%d", buffer + i);
-    // }
+    // Variable to keep track of bit position in buffer array
+    int bit_pos = 0;
+    // Read Block 0 (Superblock)
+    read(disk, buffer, 1024);
+    // Copy the first 128 bytes into the free block list array
+    memcpy(fBlock, &buffer[bit_pos], 128 * charsize);
+    bit_pos += 128 * charsize;
+    // Copy data from buffer into the 16 inodes
+    for (int i = 0; i < 16; i++){
+        // Copy the name from the buffer array
+        memcpy(inodes[i].name, &buffer[bit_pos], 8 * charsize);
+        bit_pos += 8 * charsize;
+        // And append a null byte to the end
+        inodes[i].name[8] = 0;
 
-    //close(fp);
+        // Buffer variable for 32-bit integers
+        char cpBuf[int32size];
+        // Copy size information into integer buffer
+        memcpy(cpBuf, &buffer[bit_pos], int32size);
+        // Convert integer buffer into 32-bit integer and store result in inode size variable
+        sscanf(cpBuf, "%d", &inodes[i].size);
+        bit_pos += int32size;
+
+        // For each block pointer
+        for(int j = 0; j < 8; j++){
+            // Copy block pointer information into integer buffer
+            memcpy(cpBuf, &buffer[bit_pos], int32size);
+            // Convert integer buffer into 32-bit integer and store result in block pointer array
+            sscanf(cpBuf, "%d", &inodes[i].blockPointers[j]);
+            bit_pos += int32size;
+        }
+
+        // Copy used information into integer buffer
+        memcpy(cpBuf, &buffer[bit_pos], int32size);
+        // Convert integer buffer into 32-bit integer and store result in inode used variable
+        sscanf(cpBuf, "%d", &inodes[i].used);
+        bit_pos += int32size;
+    }
+
+    // Read the remaining 127 blocks
+    for(int i = 0; i < 127; i++){
+        // Read 1 KB of data from disk
+        read(disk, buffer, 1024);
+        // Copy data from buffer into the corresponding block
+        memcpy(blocks[i].data, &buffer[0], 1024 * charsize);
+    }
+
+    // Close disk
+    close(disk);
 
     return EXIT_SUCCESS;
 }
