@@ -60,17 +60,20 @@ int main(int argc, char *argv[]) {
 
         // Tokenize string using " " space as delimiter
         char *command = strtok(buff, " ");          // First token
-        char *file_name = strtok(NULL, " ");        // Second token
-        int size_block = atoi(strtok(NULL, " "));   // Third token
+        char *file_name;                            // Second token (initialized in switch statement)
+        int size_block;                             // Third token (initialized in switch statement)
         char *buffer[1024];
 
         // Choose action based on first character (command) from input
         switch (*command) {
             case 'C':
+                file_name = strtok(NULL, " ");        // Second token
+                size_block = atoi(strtok(NULL, " "));   // Third token
                 printf("Creating %s (%d)\n", file_name, size_block);
                 create_file(file_name, size_block);
                 break;
             case 'D':
+                file_name = strtok(NULL, " ");        // Second token
                 printf("Deleting %s", file_name);
                 delete_file(file_name);
                 break;
@@ -79,10 +82,14 @@ int main(int argc, char *argv[]) {
                 list_files();
                 break;
             case 'R':
+                file_name = strtok(NULL, " ");        // Second token
+                size_block = atoi(strtok(NULL, " "));   // Third token
                 printf("Reading %s (%d)\n", file_name, size_block);
                 read_file(file_name, size_block, buffer);
                 break;
             case 'W':
+                file_name = strtok(NULL, " ");        // Second token
+                size_block = atoi(strtok(NULL, " "));   // Third token
                 printf("Writing %s (%d)\n", file_name, size_block);
                 write_file(file_name, size_block, buffer);
                 break;

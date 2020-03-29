@@ -13,8 +13,8 @@ int main(int argc, char *argv[]) {
 
   if (argc == 1) {
     fprintf(stderr, "usage: %s <diskFileName>\n", argv[0]);
-    //exit(0);
-    argv[1] = "disk0";
+    exit(0);
+    //argv[1] = "disk0";
   }
 
   printf("Creating  a 128KB  file in %s\n", argv[1]);
