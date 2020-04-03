@@ -6,6 +6,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <time.h>
+#include <string.h>
 
 #define filepath "lab3_part2_input.txt"
 #define int32size sizeof(__int32_t)
@@ -93,11 +94,19 @@ int main(int argc, char *argv[]) {
     // Read remaining lines of input file
     while(fgets(buff, 20, fp) != NULL) {
 
+      printf("start of next command \n");
+      printf("buffer is equal to: %s", buff);
+
+    
+      
         // Tokenize string using " " space as delimiter
         char *command = strtok(buff, " ");          // First token
-        char* file_name;                            // Second token (initialized in switch statement)
+        char *file_name;                            // Second token (initialized in switch statement)
         int size_block;                             // Third token (initialized in switch statement)
+
+	printf("read command \n");
         char buffer[1024];
+/*
         for (int i = 0; i < 1024; i++){
             int j = rand() % 64;
             if (j == 0){
@@ -112,17 +121,41 @@ int main(int argc, char *argv[]) {
                 buffer[i] = j + 59;
             }
         }
+*/
 
+	buffer[0] = 't';
+	buffer[1] = 'e';
+	buffer[2] = 's';
+	buffer[3] = 't';
+	buffer[4] = ' ';
+	for (int i = 5; i < 8; i++){
+	  char j = rand() % 10;
+	  j = j + 48;
+	  buffer[i] = j;
+	}
+
+	buffer[8] = '\n';
+	buffer[9] = 0;
+
+
+	printf("made data \n");
+	printf("buffer is equal to: %s \n", buff);
         // Choose action based on first character (command) from input
         int fs_response;
         switch (*command) {
             case 'C': // DOne
+	        printf("hit create \n");
                 file_name = strtok(NULL, " ");        // Second token
-                size_block = atoi(strtok(NULL, " "));   // Third token
+		printf("file name is %s with a filename of length %ld\n", file_name,
+		       sizeof(file_name)); 
+		size_block = atoi(strtok(NULL, " "));   // Third token
+		printf("file size is %d\n", size_block); 
+		printf("finished grabing tokens \n");
                 printf("Creating %s (%d) - ", file_name, size_block);
                 fs_response = create_file(file_name, size_block);
                 break;
             case 'D': // Done
+	       printf("hit done \n");
                 file_name = strtok(NULL, " ");        // Second token
                 char actual_fn[8];
                 for (int i = 0; i < 9; i++){
@@ -292,38 +325,40 @@ int saveFileSystem(char* diskName){
         return FS_GENERIC_ERROR;
 
     for (int i = 0; i < 16; i++){
+
+      printf("this is inNode %d \n", i);
         char fname[8];
         memcpy(fname, &inodes[i].name[0], 8);
         if (write(file, fname, 8) < 0)
             return FS_GENERIC_ERROR;
         
-        char *ptr = (char*)&inodes[i].size;
-        char size[int32size];
-        for (int i = 0; i < int32size; i++, ptr++){
-            size[i] = *ptr;
-        }
+        char size[2];
+	sprintf(size, "%d", inodes[i].size);
+
+	printf("size array is %c \n", size[0]);
+	printf("we finished sprintf \n");
+	
 
         if (write(file, size, int32size) < 0)
             return FS_GENERIC_ERROR;
 
+	printf("finished writing size \n");
+	
         for (int j = 0; j < 8; j++){
-            ptr = (char*)&inodes[i].blockPointers[j];
-            char bPointer[int32size];
-            for (int i = 0; i < int32size; i++, ptr++){
-                bPointer[i] = *ptr;
-            }
+           
+            char bPointer[2];
+	    sprintf(bPointer,"%d",inodes[i].blockPointers[j]);
             if (write(file, bPointer, int32size) < 0)
                 return FS_GENERIC_ERROR;
         }
-
-        ptr = (char*)&inodes[i].used;
-        char used[int32size];
-        for (int i = 0; i < int32size; i++, ptr++){
-            used[i] = *ptr;
-        }
+	printf("finished bPointer loop \n");
+       
+         char used[2];
+	 sprintf(used, "%d", inodes[i].used);
 
         if (write(file, used, int32size) < 0)
             return FS_GENERIC_ERROR;
+	printf("finished used \n\n\n\n\n");
     }
 
     char emptyBuffer[128];
@@ -350,6 +385,7 @@ int saveFileSystem(char* diskName){
 int create_file(char name[8], int size) {
     // Step 1: Look for a free inode by searching the collection of objects representing inodes within the super block object.
 
+  
     if (size < 0 && size > 8){
         return FS_ARG_ERROR;
     }
@@ -361,7 +397,7 @@ int create_file(char name[8], int size) {
             break;
         }
     }
-
+    
     if (inode == -1){
         return FS_SPACE_ERROR;
     }
@@ -372,7 +408,7 @@ int create_file(char name[8], int size) {
             return FS_ARG_ERROR;
         }
     }
-
+    
     // Step 2: Look for a number of free blocks equal to the size variable passed to this method. If not enough free blocks exist, then return an error.
 
     int begin_block = -1;
@@ -394,7 +430,7 @@ int create_file(char name[8], int size) {
     if (begin_block == -1){
         return FS_SPACE_ERROR;
     }
-
+    
     // Step 3: Now we know we have an inode and free blocks necessary to create the file. So mark the inode and blocks as used and update the rest of the information in the inode.
 
     memcpy(inodes[inode].name, &name[0], 8);
@@ -405,15 +441,15 @@ int create_file(char name[8], int size) {
         fBlock[begin_block + i] = 1;
         inodes[inode].blockPointers[i] = begin_block + 1;
     }
-
+    
     // TODO Step 4: Write the entire super block back to disk. An easy way to do this is to seek to the beginning of the disk and write the 1KB memory chunk.
 
     if (saveFileSystem(disk) != FS_SUCCESS){
         return FS_GENERIC_ERROR;
     }
-
     // If no free inode exists, then return an error. Also make sure that no other file in use with the same name exists.
     return FS_SUCCESS;
+
 }
 
 
