@@ -1,4 +1,14 @@
 disk0
-C a1.out 4
-C file1.c 3
+L
+C a1.out 6
+C file1.c 4
+L
+D file1.c
+L
+C file2.c 4
+L 
+W file2.c 0
+L
+R file2.c 0
+R a1.out 0
 

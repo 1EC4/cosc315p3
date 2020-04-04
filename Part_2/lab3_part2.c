@@ -15,6 +15,7 @@
 #define FS_GENERIC_ERROR 1
 #define FS_SPACE_ERROR 2
 #define FS_ARG_ERROR 3
+#define FS_FILE_ALREADY_EXISTS 4
 
 // Structure for inodes
 struct inode {
@@ -106,56 +107,56 @@ int main(int argc, char *argv[]) {
 
 	printf("read command \n");
         char buffer[1024];
-/*
-        for (int i = 0; i < 1024; i++){
-            int j = rand() % 64;
-            if (j == 0){
-                buffer[i] = 10;
-            } else if (j == 1){
-                buffer[i] = 32;
-            } else if (j >= 2 && j <= 11){
-                buffer[i] = j + 46;
-            } else if (j >= 12 && j <= 37){
-                buffer[i] = j + 53;
-            } else {
-                buffer[i] = j + 59;
-            }
-        }
-*/
 
-	buffer[0] = 't';
-	buffer[1] = 'e';
-	buffer[2] = 's';
-	buffer[3] = 't';
-	buffer[4] = ' ';
-	for (int i = 5; i < 8; i++){
-	  char j = rand() % 10;
-	  j = j + 48;
-	  buffer[i] = j;
+	//if we are writing new data generate random data to write and print it 
+	if ( *command == 'W' ) {
+	  buffer[0] = 't';
+	  buffer[1] = 'e';
+	  buffer[2] = 's';
+	  buffer[3] = 't';
+	  buffer[4] = ' ';
+	  for (int i = 5; i < 8; i++){
+	    char j = rand() % 10;
+	    j = j + 48;
+	    buffer[i] = j;
+	  }
+
+	  buffer[8] = '\n';
+	  buffer[9] = 0;
+
+
+	  printf("made data \n");
 	}
-
-	buffer[8] = '\n';
-	buffer[9] = 0;
-
-
-	printf("made data \n");
-	printf("buffer is equal to: %s \n", buff);
+	//if i'm not writing buffer should be empty till i read in data 
+	else {
+	  buffer[0] = 'N';
+	  buffer[1] = 'o';
+	  buffer[2] = ' ';
+	  buffer[3] = 'd';
+	  buffer[4] = 'a';
+	  buffer[5] = 't';
+	  buffer[6] = 'a';
+	  for (int i = 7; i < 10; i++) {
+	    buffer[i] = 0; //to reset the random data if a write command is called beforehand
+	  }
+	}
+	//printf("buffer is equal to: %s \n", buff);
         // Choose action based on first character (command) from input
         int fs_response;
         switch (*command) {
             case 'C': // DOne
-	        printf("hit create \n");
+	      //printf("hit create \n");
                 file_name = strtok(NULL, " ");        // Second token
-		printf("file name is %s with a filename of length %ld\n", file_name,
-		       sizeof(file_name)); 
+		//printf("file name is %s with a filename of length %ld\n", file_name,
+		//       sizeof(file_name)); 
 		size_block = atoi(strtok(NULL, " "));   // Third token
-		printf("file size is %d\n", size_block); 
-		printf("finished grabing tokens \n");
+		//printf("file size is %d\n", size_block); 
+		//printf("finished grabing tokens \n");
                 printf("Creating %s (%d) - ", file_name, size_block);
                 fs_response = create_file(file_name, size_block);
                 break;
             case 'D': // Done
-	       printf("hit done \n");
+	      //printf("hit delete \n");
                 file_name = strtok(NULL, " ");        // Second token
                 char actual_fn[8];
                 for (int i = 0; i < 9; i++){
@@ -184,16 +185,18 @@ int main(int argc, char *argv[]) {
                 fs_response = delete_file(actual_fn);
                 break;
             case 'L':  // Done
-                printf("Listing files\n");
+	      //printf("Listing files\n");
                 fs_response = list_files();
                 break;
             case 'R':
+	      //printf("reading file\n");
                 file_name = strtok(NULL, " ");        // Second token
                 size_block = atoi(strtok(NULL, " "));   // Third token
                 printf("Reading %s (%d) - ", file_name, size_block);
                 fs_response = read_file(file_name, size_block, buffer);
                 break;
             case 'W':
+	      //printf("writing file\n");
                 file_name = strtok(NULL, " ");        // Second token
                 size_block = atoi(strtok(NULL, " "));   // Third token
                 printf("Writing %s (%d) - ", file_name, size_block);
@@ -217,6 +220,9 @@ int main(int argc, char *argv[]) {
             case FS_ARG_ERROR:
                 printf("Invalid arguments\n");
                 break;
+	    case FS_FILE_ALREADY_EXISTS:
+	      printf("file already exists in the file system\n");
+	        break;
         }
 
         printf("----------START BUFFER----------------\n\n\n%s\n\n------------END BUFFER----------------\n", buffer);
@@ -326,39 +332,39 @@ int saveFileSystem(char* diskName){
 
     for (int i = 0; i < 16; i++){
 
-      printf("this is inNode %d \n", i);
+      // printf("this is inNode %d \n", i);
         char fname[8];
         memcpy(fname, &inodes[i].name[0], 8);
         if (write(file, fname, 8) < 0)
             return FS_GENERIC_ERROR;
         
-        char size[2];
+        char size[5];
 	sprintf(size, "%d", inodes[i].size);
 
-	printf("size array is %c \n", size[0]);
-	printf("we finished sprintf \n");
+	//printf("size array is %c \n", size[0]);
+	//printf("we finished sprintf \n");
 	
 
         if (write(file, size, int32size) < 0)
             return FS_GENERIC_ERROR;
 
-	printf("finished writing size \n");
+	//	printf("finished writing size \n");
 	
         for (int j = 0; j < 8; j++){
            
-            char bPointer[2];
+            char bPointer[5];
 	    sprintf(bPointer,"%d",inodes[i].blockPointers[j]);
             if (write(file, bPointer, int32size) < 0)
                 return FS_GENERIC_ERROR;
         }
-	printf("finished bPointer loop \n");
+	//printf("finished bPointer loop \n");
        
-         char used[2];
+         char used[5];
 	 sprintf(used, "%d", inodes[i].used);
 
         if (write(file, used, int32size) < 0)
             return FS_GENERIC_ERROR;
-	printf("finished used \n\n\n\n\n");
+	//	printf("finished used \n\n\n\n\n");
     }
 
     char emptyBuffer[128];
@@ -405,7 +411,7 @@ int create_file(char name[8], int size) {
     for (int i = 0; i < 16; i++){
         if (inodes[i].used == 1
         && streq(inodes[i].name, name) == 1){
-            return FS_ARG_ERROR;
+            return FS_FILE_ALREADY_EXISTS;
         }
     }
     
@@ -470,9 +476,15 @@ int delete_file(char name[8]) {
     }
 
     // Step 3: Mark inode as free.
-
+    
     inodes[inode].used = 0;
+    //free up other contents of the of that inode struct
+    for ( int i = 0; i < strlen(inodes[inode].name); i++) {
+      inodes[inode].name[i] = 0; //set each character in to be null
+    }
 
+    inodes[inode].size = 0;
+    
     // Step 4: Write the entire super block back to disk.
 
     if (saveFileSystem(disk) != FS_SUCCESS){
