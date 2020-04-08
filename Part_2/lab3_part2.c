@@ -144,19 +144,16 @@ int main(int argc, char *argv[]) {
         // Choose action based on first character (command) from input
         int fs_response;
         switch (*command) {
-            case 'C': // DOne
-	      //printf("hit create \n");
+            case 'C': // Create
                 file_name = strtok(NULL, " ");        // Second token
-		//printf("file name is %s with a filename of length %ld\n", file_name,
+	
 		//       sizeof(file_name)); 
 		size_block = atoi(strtok(NULL, " "));   // Third token
-		//printf("file size is %d\n", size_block); 
-		//printf("finished grabing tokens \n");
+		
                 printf("Creating %s (%d) - ", file_name, size_block);
                 fs_response = create_file(file_name, size_block);
                 break;
-            case 'D': // Done
-	      //printf("hit delete \n");
+            case 'D': // Delete
                 file_name = strtok(NULL, " ");        // Second token
                 char actual_fn[8];
                 for (int i = 0; i < 9; i++){
@@ -184,19 +181,16 @@ int main(int argc, char *argv[]) {
                 printf("Deleting %s - ", actual_fn);
                 fs_response = delete_file(actual_fn);
                 break;
-            case 'L':  // Done
-	      //printf("Listing files\n");
+            case 'L':  // List
                 fs_response = list_files();
                 break;
-            case 'R':
-	      //printf("reading file\n");
+	case 'R': //read
                 file_name = strtok(NULL, " ");        // Second token
                 size_block = atoi(strtok(NULL, " "));   // Third token
                 printf("Reading %s (%d) - ", file_name, size_block);
                 fs_response = read_file(file_name, size_block, buffer);
                 break;
-            case 'W':
-	      //printf("writing file\n");
+	case 'W': //write
                 file_name = strtok(NULL, " ");        // Second token
                 size_block = atoi(strtok(NULL, " "));   // Third token
                 printf("Writing %s (%d) - ", file_name, size_block);
@@ -316,40 +310,28 @@ int myFileSystem(char* diskName) {
 }
 
 int saveFileSystem(char* diskName){
-    /*
-    int32_t x=someValue;
-    char *ptr = (char*)&x;
-    char *msg = new char[5];
-    for(int i=0;i<4;++i, ++ptr)
-        msg[i] = *ptr;
-    */
-
 
     int file = open(diskName, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 
+    //write the free block list
     if (write(file, fBlock, 128) < 0)
         return FS_GENERIC_ERROR;
 
+    //for each inode
     for (int i = 0; i < 16; i++){
-
-      // printf("this is inNode %d \n", i);
+      //get and write the name
         char fname[8];
         memcpy(fname, &inodes[i].name[0], 8);
         if (write(file, fname, 8) < 0)
             return FS_GENERIC_ERROR;
-        
+        //the size
         char size[5];
 	sprintf(size, "%d", inodes[i].size);
-
-	//printf("size array is %c \n", size[0]);
-	//printf("we finished sprintf \n");
-	
 
         if (write(file, size, int32size) < 0)
             return FS_GENERIC_ERROR;
 
-	//	printf("finished writing size \n");
-	
+	//block pointer 
         for (int j = 0; j < 8; j++){
            
             char bPointer[5];
@@ -357,16 +339,16 @@ int saveFileSystem(char* diskName){
             if (write(file, bPointer, int32size) < 0)
                 return FS_GENERIC_ERROR;
         }
-	//printf("finished bPointer loop \n");
-       
+
+	// if it is used or not
          char used[5];
 	 sprintf(used, "%d", inodes[i].used);
 
         if (write(file, used, int32size) < 0)
             return FS_GENERIC_ERROR;
-	//	printf("finished used \n\n\n\n\n");
     }
 
+    //empty space leftever 
     char emptyBuffer[128];
     for (int i = 0; i < 128; i++){
         emptyBuffer[i] = 0;
@@ -375,11 +357,13 @@ int saveFileSystem(char* diskName){
     if (write(file, emptyBuffer, 128) < 0)
         return FS_GENERIC_ERROR;
 
+    //write the data
     for (int i = 1; i < 128; i++){
         if (write(file, blocks[i].data, 1024) < 0)
             return FS_GENERIC_ERROR;
     }
 
+    //close the file
     close(file);
 
     return FS_SUCCESS;
