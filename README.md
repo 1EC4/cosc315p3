@@ -55,7 +55,7 @@ Check out [this example file](sample_output.txt) for sample output.
   - 1 fixed a logical error for the offset in part one and changed how limit was calculated
   - 2 Paired programming with nick for Part 2 delete, list, read and write 
   - 3 fixed erros involving segmentation faults along function not actually doing anything in saving of filesystem
-  - 4 
+  - 4 Updated Readme
   - 5
 
 - **Nick Rieske**
