@@ -74,6 +74,6 @@ Check out [this example file](sample_output.txt) for sample output.
   3. Programmed `lab3_part2.c` to open the input file, and tokenize the input lines
   4. Built a switch statement to look at the first token and determine which command should be run
   5. Framed out the file system functions to be called in the switch statement with the appropriate arguments
-  6. Paired debugging with Anthony to try and determine source of a segmentation fault
+  6. Paired debugging with Anthony to determine source of a segmentation fault
 
 [Back to The Top](#cosc-315-operating-systems---project-3)
