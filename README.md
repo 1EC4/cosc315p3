@@ -52,7 +52,15 @@ The second component mimics how a simple UNIX-like file system operates. We used
   4. Run the program:`./program`
 
 ## Sample Output
-Check out [this example file](sample_output.txt) for sample output.
+
+**Part 1: Memory Management**
+
+Check out [this example file](Part_1/sample_output.txt) for sample output.
+
+**Part 2: File Systems**
+
+Check out [this example file](Part_2/sample_output.txt) for sample output.
+
 
 ## Contributors
 - **Anthony Boyko**
