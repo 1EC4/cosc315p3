@@ -55,11 +55,11 @@ The second component mimics how a simple UNIX-like file system operates. We used
 
 **Part 1: Memory Management**
 
-Check out [this example file](Part_1/sample_output.txt) for sample output.
+- Check out [this example file](Part_1/sample_output.txt) for sample output.
 
 **Part 2: File Systems**
 
-Check out [this example file](Part_2/sample_output.txt) for sample output.
+- Check out [this example file](Part_2/sample_output.txt) for sample output.
 
 
 ## Contributors
