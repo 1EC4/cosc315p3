@@ -12,7 +12,7 @@ virtual address 561560 is in page number 35097 and offset 8
 virtual address 561650 is in page number 35103 and offset 2
 virtual address 654165 is in page number 40885 and offset 5
 virtual address 15 is in page number 0 and offset 15
-virtual address 0 is in page number 0 and offset 0
+virtual address 0 is in page number 0 and offset 0               <- note offset and page number are 0 based not 1
 virtual address 1 is in page number 0 and offset 1
 virtual address 16 is in page number 1 and offset 0
 virtual address 31 is in page number 1 and offset 15
