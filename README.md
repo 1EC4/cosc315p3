@@ -10,10 +10,9 @@
 - [Programming Experience](#programming-experience)
 
 ## Description
+This project involves two components. The first component uses an input file where we recieve 'n' number of bits that represent the offset, 'm' number of bits for the page number, and then a series of virtual addresses. Using this information, we converted these addresses such that their location is represented by a page number p that offsets by d instructions.  
 
-This project involves two components. The first component has take a input file where we recieve n number of bits that represent the offset, m number of bits for the page number and then a series of virtual addresses. Using this information we had to convert these addresses such that there location was represented by a page number p that offset by d instructions.  
-
-In the second part our task was to mimic how a simple UNIX-like file system operates We were given code that will make the filesystem. While our task was to make a program that could read a series of instruction from a text file that do specific operations to that filesystem. The first line would tell us the name of the filesystem and every line afterwards is telling us a given instruction. Each token in an instruction is split by " ", there are at most 3 tokens per line. The first is the command to be done. While the second if there is a file name and the 3rd will either be a integer representing the size or where in a file an operation occurs.
+The second component mimics how a simple UNIX-like file system operates. We used provided code to build the filesystem; our task was to make a program that could read a series of instructions from a text file that do specific operations to that filesystem. The first line tells us the name of the filesystem and every line afterwards represents a given instruction. Each token in an instruction is delimited by " ", there are at most 3 tokens per line. The first token is the command to be done. If the command calls for additional arguments to function properly, the second token is the string representing file name and the third token is an integer that represents either the size (in blocks) or location (by block) in the file where an operation should occur.
 
 ## Core Features
 **Request scheduling using threads and synchronization:**
@@ -35,13 +34,13 @@ In the second part our task was to mimic how a simple UNIX-like file system oper
 
   1. Clone the project to a local repository:   `git clone https://github.com/1EC4/cosc315p3.git`
   
-**Part 1:**
+**Part 1: Memory Management**
 
   2. Navigate to the Java directory: `cd "cosc315p2/Part_1"`
   3. Build the program: `make`
   4. Run the program: `./program`
   
-**Part 2:**
+**Part 2: File Systems**
 
   2. Navigate to the Java directory: `cd "cosc315p2/Part_2"`
   3. Build the program: `make`
