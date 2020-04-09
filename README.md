@@ -7,7 +7,6 @@
 - [Build Instructions](#build-instructions)
 - [Sample Output](#sample-output)
 - [Contributors](#contributors)
-- [Programming Experience](#programming-experience)
 
 ## Description
 This project involves two components. The first component uses an input file where we recieve 'n' number of bits that represent the offset, 'm' number of bits for the page number, and then a series of virtual addresses. Using this information, we converted these addresses such that their location is represented by a page number p that offsets by d instructions.  
@@ -17,23 +16,24 @@ The second component mimics how a simple UNIX-like file system operates. We used
 ## Core Features
 
 **Part 1: Memory Management**
-- [x] Takes a sequence of virtual addresses to extract the page number and offset for each address
-- [x] Reads an input file containing the number of bits for page and offset, followed by a list of virtual addresses
-- [x] Calculates the page and offset numbers using bit-wise operations
-- [x] Prints out the virtual address that is read, along with the calculated page and offset numbers
+- [x] Takes a sequence of virtual addresses to extract the page number and offset for each address.
+- [x] Reads an input file containing the number of bits for page and offset, followed by a list of virtual addresses.
+- [x] Calculates the page and offset numbers using bit-wise operations.
+- [x] Prints out the virtual address that is read, along with the calculated page and offset numbers.
 
 **Part 2: File Systems**
-- [x] Opens a pre-formatted virtual file system
-- [x] Reads an input file containing and tokenizes each line into 1 - 3 tokens
-- [x] Evaluates the first token and jump to the appropriate command
-- [x] Processes the command on the file system and prints actions to the terminal
-- [x] Save the file system to ensure persistence
+- [x] Opens a pre-formatted virtual file system.
+- [x] Reads an input file containing and tokenizes each line into 1 - 3 tokens.
+- [x] Evaluates the first token and jump to the appropriate command.
+- [x] Processes the command on the file system and prints actions to the terminal.
+- [x] Writes to the file system to ensure persistence.
 
 ## Design Choices
-  1. We chose to solve the first part on paper first for how the offset and page would be calculated then afterwards implemented it in c
-  2. Because the project is two distinct parts we decided to separate them with their own makefiles and folders for clarity sake.
-  3. We keep all of part 2s functions in one file due to there only needing to be a handful. This meant there was a need to give each task its own header file along with a c file to accompany it. 
-    
+  1. We chose to solve the first component on paper outlining how the offset and page would be calculated, then implemented the program in C.
+  2. In order to avoid using division or modulus operators, we used shift left `<<` and shift right `>>` operators.
+  3. To improve clarity, we separated the project into separate directories, each with their own makefiles.
+  4. We also used C to program the second component for a lower-level implementation that C++ would offer.
+  5. We kept all of the second components file system functions in one file as there is a small amount of them. This allowed us to keep the project simple without an abundance of C files accompanied by its own header files.   
   
 ## Build instructions
 
@@ -75,9 +75,5 @@ Check out [this example file](sample_output.txt) for sample output.
   4. Built a switch statement to look at the first token and determine which command should be run
   5. Framed out the file system functions to be called in the switch statement with the appropriate arguments
   6. Paired debugging with Anthony to try and determine source of a segmentation fault
-
-## Programming Experience
-
-Not sure if we need this
 
 [Back to The Top](#cosc-315-operating-systems---project-3)
