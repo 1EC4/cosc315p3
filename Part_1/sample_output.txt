@@ -1,1 +1,21 @@
 Sample output 1
+n = 4
+m = 12
+virtual address 540 is in page number 33 and offset 12
+virtual address 878 is in page number 54 and offset 14
+virtual address 5465 is in page number 341 and offset 9
+virtual address 19816 is in page number 1238 and offset 8
+virtual address 32286 is in page number 2017 and offset 14
+virtual address 51651 is in page number 3228 and offset 3
+virtual address 516816 is in page number 32301 and offset 0
+virtual address 561560 is in page number 35097 and offset 8
+virtual address 561650 is in page number 35103 and offset 2
+virtual address 654165 is in page number 40885 and offset 5
+virtual address 15 is in page number 0 and offset 15
+virtual address 0 is in page number 0 and offset 0
+virtual address 1 is in page number 0 and offset 1
+virtual address 16 is in page number 1 and offset 0
+virtual address 31 is in page number 1 and offset 15
+virtual address 18 is in page number 1 and offset 2
+virtual address 32 is in page number 2 and offset 0
+virtual address 65535 is in page number 4095 and offset 15
