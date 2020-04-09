@@ -12,7 +12,7 @@
 ## Description
 This project involves two components. The first component uses an input file where we recieve 'n' number of bits that represent the offset, 'm' number of bits for the page number, and then a series of virtual addresses. Using this information, we converted these addresses such that their location is represented by a page number p that offsets by d instructions.  
 
-The second component mimics how a simple UNIX-like file system operates. We used provided code to build the filesystem; our task was to make a program that could read a series of instructions from a text file that do specific operations to that filesystem. The first line tells us the name of the filesystem and every line afterwards represents a given instruction. Each token in an instruction is delimited by " ", there are at most 3 tokens per line. The first token is the command to be done. If the command calls for additional arguments to function properly, the second token is the string representing file name and the third token is an integer that represents either the size (in blocks) or location (by block) in the file where an operation should occur.
+The second component mimics how a simple UNIX-like file system operates. We used provided code to build the filesystem; our task was to make a program that could read a series of instructions from a text file that do specific operations to that filesystem. The first line tells us the name of the filesystem and every line afterwards represents a given instruction. Each token in an instruction is delimited by " ", there are at most 3 tokens per line. The first token is the command to be done. If the command calls for additional arguments to function properly, the second token is the string representing file name and the third token is an integer that represents either the size (in blocks) or which block in the file where the operation should occur.
 
 ## Core Features
 **Request scheduling using threads and synchronization:**
@@ -64,11 +64,12 @@ Check out [this example file](sample_output.txt) for sample output.
   5. Wrote `makefile`'s for parts 1 and 2
 
 - **Jonathan Gresl**
-  1. 
-  2. 
-  3. 
-  4. 
-  5. 
+  1. Programmed `lab3_part1.c` to open the input file and read through each line
+  2. Used the formulas from the team meeting to calculate and print the page and offset with bit-wise operations
+  3. Programmed `lab3_part.c` to open the input file, and tokenize the input lines
+  4. Built a switch statement to look at the first token and determine which command should be run
+  5. Framed out the file sytem functions to be called in the switch statment with the appropriate arguments
+  6. Paired debuggins with Anthony to try and determine source of a segmentation fault
 
 ## Programming Experience
 
