@@ -15,14 +15,19 @@ This project involves two components. The first component uses an input file whe
 The second component mimics how a simple UNIX-like file system operates. We used provided code to build the filesystem; our task was to make a program that could read a series of instructions from a text file that do specific operations to that filesystem. The first line tells us the name of the filesystem and every line afterwards represents a given instruction. Each token in an instruction is delimited by " ", there are at most 3 tokens per line. The first token is the command to be done. If the command calls for additional arguments to function properly, the second token is the string representing file name and the third token is an integer that represents either the size (in blocks) or which block in the file where the operation should occur.
 
 ## Core Features
-**Request scheduling using threads and synchronization:**
-- [x] 1
-- [x] 2
-- [x] 3
-- [x] 4
-- [x] 5
-- [x] 6
-- [x] 7
+
+**Part 1: Memory Management**
+- [x] Takes a sequence of virtual addresses to extract the page number and offset for each address
+- [x] Reads an input file containing the number of bits for page and offset, followed by a list of virtual addresses
+- [x] Calculates the page and offset numbers using bit-wise operations
+- [x] Prints out the virtual address that is read, along with the calculated page and offset numbers
+
+**Part 2: File Systems**
+- [x] Opens a pre-formatted virtual file system
+- [x] Reads an input file containing and tokenizes each line into 1 - 3 tokens
+- [x] Evaluates the first token and jump to the appropriate command
+- [x] Processes the command on the file system and prints actions to the terminal
+- [x] Save the file system to ensure persistence
 
 ## Design Choices
   1. We chose to solve the first part on paper first for how the offset and page would be calculated then afterwards implemented it in c
@@ -66,10 +71,10 @@ Check out [this example file](sample_output.txt) for sample output.
 - **Jonathan Gresl**
   1. Programmed `lab3_part1.c` to open the input file and read through each line
   2. Used the formulas from the team meeting to calculate and print the page and offset with bit-wise operations
-  3. Programmed `lab3_part.c` to open the input file, and tokenize the input lines
+  3. Programmed `lab3_part2.c` to open the input file, and tokenize the input lines
   4. Built a switch statement to look at the first token and determine which command should be run
-  5. Framed out the file sytem functions to be called in the switch statment with the appropriate arguments
-  6. Paired debuggins with Anthony to try and determine source of a segmentation fault
+  5. Framed out the file system functions to be called in the switch statement with the appropriate arguments
+  6. Paired debugging with Anthony to try and determine source of a segmentation fault
 
 ## Programming Experience
 
