@@ -39,38 +39,37 @@ In the second part our task was to mimic how a simple UNIX-like file system oper
 
   2. Navigate to the Java directory: `cd "cosc315p2/Part_1"`
   3. Build the program: `make`
-  4. Run the program: ./lab3_part1
+  4. Run the program: `./program`
   
 **Part 2:**
 
   2. Navigate to the Java directory: `cd "cosc315p2/Part_2"`
   3. Build the program: `make`
-  4. Run the program: ./lab3_part2
+  4. Run the program:`./program`
 
 ## Sample Output
 Check out [this example file](sample_output.txt) for sample output.
 
 ## Contributors
 - **Anthony Boyko**
-  - 1 fixed a logical error for the offset in part one and changed how limit was calculated
-  - 2 Paired programming with nick for Part 2 delete, list, read and write 
-  - 3 fixed erros involving segmentation faults along function not actually doing anything in saving of filesystem
-  - 4 Updated Readme
-  - 5
+  1. Fixed a logical error for the offset in part one and changed how limit was calculated
+  2. Paired programming with Nick for Part 2 `delete`, `list`, `read` and `write` 
+  3. Fixed erros involving segmentation faults along function not actually doing anything in saving of filesystem
+  4. Updated Readme
 
 - **Nick Rieske**
-  - 1
-  - 2
-  - 3
-  - 4
-  - 5
+  1. Wrote `MyFileSystem` to load a filesystem from a disk file
+  2. Wrote initial version of `SaveFileSystem`
+  3. Programmed `delete`, `list`, `read`, and `write` functions with Anthony
+  4. Programmed `create` function
+  5. Wrote `makefile`'s for parts 1 and 2
 
 - **Jonathan Gresl**
-  - 1
-  - 2
-  - 3
-  - 4
-  - 5
+  1. 
+  2. 
+  3. 
+  4. 
+  5. 
 
 ## Programming Experience
 
