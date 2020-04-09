@@ -1,1 +1,160 @@
 Sample output 2
+File System:	disk0
+Successfully loaded filesystem.
+----------------------------------
+start of next command 
+buffer is equal to: L 
+read command 
+disk0
+	a1.out		6KB
+	file2.c		4KB
+
+Success
+----------START BUFFER----------------
+
+
+No data                                     <-- no data references that the command wasn't a read or write
+                                            <-- because if the point of the file is empty for the read this section is
+------------END BUFFER----------------      <-- left empty
+start of next command 
+buffer is equal to: C a1.out 6
+read command 
+Creating a1.out (6) - file already exists in the file system
+----------START BUFFER----------------
+
+
+No data
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: C file1.c 4
+read command 
+Creating file1.c (4) - Success
+----------START BUFFER----------------
+
+
+No data
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: L
+read command 
+disk0
+	a1.out		6KB
+	file2.c		4KB
+	file1.c		4KB
+
+Success
+----------START BUFFER----------------
+
+
+No data
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: D file1.c
+read command 
+Deleting file1.c - Success
+----------START BUFFER----------------
+
+
+No data
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: L
+read command 
+disk0
+	a1.out		6KB
+	file2.c		4KB
+
+Success
+----------START BUFFER----------------
+
+
+No data
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: C file2.c 4
+read command 
+Creating file2.c (4) - file already exists in the file system
+----------START BUFFER----------------
+
+
+No data
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: L 
+read command 
+disk0
+	a1.out		6KB
+	file2.c		4KB
+
+Success
+----------START BUFFER----------------
+
+
+No data
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: W file2.c 0
+read command 
+made data 
+Writing file2.c (0) - Success
+----------START BUFFER----------------
+
+
+test 537
+
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: L
+read command 
+disk0
+	a1.out		6KB
+	file2.c		4KB
+
+Success
+----------START BUFFER----------------
+
+
+No data
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: R file2.c 0
+read command 
+Reading file2.c (0) - Success
+----------START BUFFER----------------
+
+
+test 537
+
+
+------------END BUFFER----------------
+start of next command 
+buffer is equal to: R a1.out 0
+read command 
+Reading a1.out (0) - Success
+----------START BUFFER----------------
+
+
+test 348
+
+
+------------END BUFFER----------------  <- note this input is a empty line at the end of the file
+start of next command 
+buffer is equal to: 
+read command 
+Something went wrong
+----------START BUFFER----------------
+
+
+No data
+
+------------END BUFFER----------------
+
